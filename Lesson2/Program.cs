@@ -127,6 +127,24 @@ class Program
         return newStrand;
     }
 
+    // Q3
+    static void RemoveNumFromNode(Node<int> node, int num, string mode = "normal")
+    {
+        Node<int> pos = node;
+
+        if (mode.Equals("start"))
+        {
+            while (pos.GetValue() == num)
+                pos = pos.GetNext();
+            node = pos;
+        }
+        else if (mode.Equals("normal"))
+        {
+
+        }
+
+    }
+
     // הדפסת שרשרת
     static void Print(Node<int> lst)
     {
