@@ -136,11 +136,30 @@ class Program
         {
             while (pos.GetValue() == num)
                 pos = pos.GetNext();
-            node = pos;
+
+            Print(pos);
         }
         else if (mode.Equals("normal"))
         {
+            Node<int> newNode = new Node<int>(pos.GetValue());            
+            pos = pos.GetNext();
 
+            Node<int> posNewNode = newNode;
+            while (pos != null)
+            {
+                if (pos.GetValue() != num)
+                    posNewNode.SetValue(pos.GetValue());
+
+                pos = pos.GetNext();
+                
+                if (pos != null && pos.GetValue() != num) 
+                {
+                    posNewNode.SetNext(new Node<int>(0));
+                    posNewNode = posNewNode.GetNext();
+                }
+            }
+
+            Print(newNode);
         }
 
     }
@@ -189,10 +208,10 @@ class Program
         Node<int>[] nodes = new Node<int>[rnd.Next(2, 11)];
 
         // יצירת צמתים ובניית שרשרת
-        nodes[0] = new Node<int>(rnd.Next(100));
+        nodes[0] = new Node<int>(rnd.Next(101));
         for (int i = 1; i < nodes.Length; i++)
         {
-            nodes[i] = new Node<int>(rnd.Next(100));
+            nodes[i] = new Node<int>(rnd.Next(101));
             nodes[i - 1].SetNext(nodes[i]);
         }
         return nodes[0];
@@ -266,9 +285,43 @@ class Program
         Console.WriteLine("CheckDNA(strand1, strand2) => " + CheckDNA(strand1, strand2));
     }
 
+    // בדיקה שאלה 3
+    static void TestQ3()
+    {
+        Node<int> n1 = new Node<int>(8);
+        Node<int> n2 = new Node<int>(8);
+        Node<int> n3 = new Node<int>(5);
+        Node<int> n4 = new Node<int>(8);
+        Node<int> n5 = new Node<int>(2);
+        Node<int> n6 = new Node<int>(8);
+        Node<int> n7 = new Node<int>(4);
+        Node<int> n8 = new Node<int>(3);
+        Node<int> n9 = new Node<int>(8);
+        // [8,8,5,8,2,8,4,3,8]
+        n1.SetNext(n2);
+        n2.SetNext(n3);
+        n3.SetNext(n4);
+        n4.SetNext(n5);
+        n5.SetNext(n6);
+        n6.SetNext(n7);
+        n7.SetNext(n8);
+        n8.SetNext(n9);
+
+        Console.WriteLine("Node:");
+        Print(n1);
+        Console.WriteLine();
+        Console.WriteLine($"RemoveNumFromNode(node, {8}, start);");
+        RemoveNumFromNode(n1, 8, "start");
+
+        Console.WriteLine();
+        Console.WriteLine($"RemoveNumFromNode(node, {8});");
+        RemoveNumFromNode(n1, 8);
+    }
+
     static void Main(string[] args)
     {
         //TestQ1();
-        TestQ2();
+        //TestQ2();
+        TestQ3();
     }
 }
