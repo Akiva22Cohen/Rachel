@@ -1,5 +1,77 @@
 ﻿using Lesson2;
 using System;
+using System.Drawing;
+
+class Point
+{
+    double x;
+    double y;
+
+    public Point(double x, double y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double GetX() { return x; }
+    public double GetY() { return y; }
+
+    public void SetX(double x) { this.x = x; }
+    public void SetY(double y) { this.y = y; }
+}
+
+class Circle
+{
+    Point center;
+
+    public Circle(Point center) { this.center = center; }
+
+    public Point GetCenter() { return center; }
+}
+
+class Expr
+{
+    double num1;
+    double num2;
+    char op;
+
+    public Expr(double num1, double num2, char op)
+    {
+        this.num1 = num1;
+        this.num2 = num2;
+        this.op = op;
+    }
+
+    public double GetNum1() { return num1; }
+    public double GetNum2() { return num2; }
+    public char GetOp() { return op; }
+
+    public void SetNum1(double num1) { this.num1 = num1; }
+    public void SetNum2(double num2) { this.num2 = num2; }
+    public void SetOp(char op) { this.op = op; }
+
+    public double Calculate()
+    {
+        switch(this.op)
+        {
+            case '+': 
+                return num1 + num2;
+            case '-':
+                return num1 - num2;
+            case '*':
+                return num1 * num2;
+            case '/':
+                return num1 / num2;
+            default:
+                return 0;
+        }
+    }
+
+    public override string ToString()
+    {
+        return $"{num1} {op} {num2}";
+    }
+} 
 
 class Program
 {
@@ -128,40 +200,74 @@ class Program
     }
 
     // Q3
-    static void RemoveNumFromNode(Node<int> node, int num, string mode = "normal")
+    static Node<int> RemoveNumFromNode(Node<int> chain, int num, string mode = "normal")
     {
-        Node<int> pos = node;
-
         if (mode.Equals("start"))
         {
+            Node<int> pos = chain;
             while (pos.GetValue() == num)
                 pos = pos.GetNext();
 
-            Print(pos);
+            return pos;
         }
         else if (mode.Equals("normal"))
         {
-            Node<int> newNode = new Node<int>(pos.GetValue());            
-            pos = pos.GetNext();
-
-            Node<int> posNewNode = newNode;
-            while (pos != null)
+            Node<int> first = null;
+            Node<int> last = null;
+            while (chain != null)
             {
-                if (pos.GetValue() != num)
-                    posNewNode.SetValue(pos.GetValue());
-
-                pos = pos.GetNext();
-                
-                if (pos != null && pos.GetValue() != num) 
+                if (chain.GetValue() != num)
                 {
-                    posNewNode.SetNext(new Node<int>(0));
-                    posNewNode = posNewNode.GetNext();
+                    if (first == null)
+                    {
+                        first = new Node<int>(chain.GetValue());
+                        last = first;
+                    }
+                    else
+                    {
+                        last.SetNext(new Node<int>(chain.GetValue()));
+                        last = last.GetNext();
+                    }
                 }
+                chain = chain.GetNext();
             }
+            return first;
+        }
+        return null;
+    }
 
-            Print(newNode);
+    // Q4
+    static int CountPointInCircle(Node<Circle> circle, Point point)
+    {
+        int count = 0;
+        Node<Circle> pos = circle;
+        double x, y;
+
+        while (pos != null)
+        {
+            x = pos.GetValue().GetCenter().GetX();
+            y = pos.GetValue().GetCenter().GetY();
+
+            if (x == point.GetX() && y == point.GetY())
+                count++;
+            pos = pos.GetNext();
+        }
+        return count;
+    }
+
+    // Q5
+    static double SumExpressions(Node<Expr> node)
+    {
+        double sum = 0;
+        Node<Expr> pos = node;
+
+        while (pos != null)
+        {
+            sum += pos.GetValue().Calculate();
+            pos = pos.GetNext();
         }
 
+        return sum;
     }
 
     // הדפסת שרשרת
@@ -309,19 +415,16 @@ class Program
 
         Console.WriteLine("Node:");
         Print(n1);
-        Console.WriteLine();
-        Console.WriteLine($"RemoveNumFromNode(node, {8}, start);");
-        RemoveNumFromNode(n1, 8, "start");
-
-        Console.WriteLine();
-        Console.WriteLine($"RemoveNumFromNode(node, {8});");
-        RemoveNumFromNode(n1, 8);
+        Console.WriteLine("RemoveNumFromNode(n1, 8, start):");
+        Print(RemoveNumFromNode(n1, 8, "start"));
+        Console.WriteLine("RemoveNumFromNode(n1, 8):");
+        Print(RemoveNumFromNode(n1, 8));
     }
 
     static void Main(string[] args)
     {
         //TestQ1();
         //TestQ2();
-        TestQ3();
+        //TestQ3();
     }
 }
