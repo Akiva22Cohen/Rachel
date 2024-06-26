@@ -99,10 +99,10 @@ namespace Lesson3
             return newNode;
         }
 
-        public static void RunQ1()
+        public static void RunTestQ1()
         {
-            Node<Point> list1 = new Node<Point>(new Point(1, 5), new Node<Point>(new Point(5, 3), new Node<Point>(new Point(-16, 0)))),
-                        list2 = new Node<Point>(new Point(2, 4), new Node<Point>(new Point(6, 3), new Node<Point>(new Point(24, 1))));
+            Node<Point> list1 = new Node<Point>(new Point(1, 5), new Node<Point>(new Point(5, 3), new Node<Point>(new Point(-16, 0))));
+            Node<Point> list2 = new Node<Point>(new Point(2, 4), new Node<Point>(new Point(6, 3), new Node<Point>(new Point(24, 1))));
 
             PrintNode(MergeNodes(list1, list2));
         }
