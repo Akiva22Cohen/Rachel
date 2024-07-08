@@ -40,28 +40,33 @@ namespace Lesson5
             int cube1, cube2;
             Node<int> pos = game;
 
+            Console.WriteLine("Game start!");
+            Console.WriteLine();
             while (pos.GetNext() != game)
             {
-                Console.WriteLine("game board:");
-                Console.WriteLine("prev:");
-                Print(game, pos);
                 cube1 = rnd.Next(1, 7);
                 cube2 = rnd.Next(1, 7);
+                Console.WriteLine($"Dice: {cube1}, {cube2}");
+
+                Console.WriteLine("game board:");
+                Console.WriteLine("previous =>");
+                Print(game, pos);
                 for (int i = 0; i < (cube1 + cube2); i++)
                     pos = pos.GetNext();
 
-
                 if (pos.GetValue() == 0)
+                {
+                    Console.WriteLine("a step back!");
+                    Print(game, pos);
                     pos = FindPrev(game, pos);
+                }
 
-                //Console.WriteLine("game board:");
-                Console.WriteLine("current:");
+                Console.WriteLine("current =>");
                 Print(game, pos);
-                Console.WriteLine("Cube 1: " + cube1);
-                Console.WriteLine("Cube 2: " + cube2);
                 Console.WriteLine("position: " + pos.GetValue());
                 Console.WriteLine();
             }
+            Console.WriteLine("end game!");
         }
 
         public static void RunTestQ4()
@@ -85,8 +90,7 @@ namespace Lesson5
             nodes[nodes.Length - 1].SetNext(nodes[0]);
 
             Node<int> head = nodes[0];
-
-            Console.WriteLine("Start Game:");
+            
             GameSteps(head);
         }
     }
