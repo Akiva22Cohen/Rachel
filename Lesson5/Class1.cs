@@ -12,46 +12,65 @@ namespace Lesson5
         // מחיקת חוליות בשרשרת מעגלית
         public static Node<int> DeleteNodeCircleChain(Node<int> lst, int num)
         {
-            Node<int> prev = lst;
+            if (lst == null)
+                return null;
 
-            if (lst.GetValue() == num)
+            Node<int> current = lst;
+            Node<int> prev = null;
+
+            // Check if the head needs to be deleted
+            if (current.GetValue() == num)
             {
-                while (prev.GetNext() != lst)
-                    prev = prev.GetNext();
+                // Find the last node which points to the head
+                do
+                {
+                    prev = current;
+                    current = current.GetNext();
+                } while (current != lst);
 
+                if (prev == lst)
+                    // Only one node in the list
+                    return null;
+
+
+                // Remove the head node
                 prev.SetNext(lst.GetNext());
-                lst.SetNext(null);
-                lst = prev;
+                lst = lst.GetNext();
             }
             else
             {
-                while (prev.GetNext().GetValue() != num)
-                    prev = prev.GetNext();
+                // Traverse the list to find the node to delete
+                do
+                {
+                    prev = current;
+                    current = current.GetNext();
+                } while (current != lst && current.GetValue() != num);
 
-                prev.SetNext(prev.GetNext().GetNext());
+                if (current.GetValue() == num)
+                    // Remove the node
+                    prev.SetNext(current.GetNext());
+
             }
 
             return lst;
         }
 
+
         public static void SelectAndRemove(Node<int> lst, int num)
         {
             Node<int> pos = lst;
-            int i = 0, n;
-
+            int n = num;
             while (pos != null)
             {
-                while (i <= num)
-                {
+                for (int i = 0; i < n - 1; i++)
                     pos = pos.GetNext();
-                    i++;
-                }
+
                 n = pos.GetValue();
-                Console.WriteLine(n + " ");
+                Console.Write(n + " ");
                 lst = DeleteNodeCircleChain(lst, n);
                 pos = lst;
-                i = 0;
             }
+            Console.WriteLine();
         }
 
         public static void Print(Node<int> lst)
@@ -63,6 +82,7 @@ namespace Lesson5
                 Console.Write(pos.GetValue() + " ");
                 pos = pos.GetNext();
             }
+            Console.WriteLine(pos.GetValue() + " ");
         }
 
         public static void RunTestQ1()
@@ -79,7 +99,9 @@ namespace Lesson5
 
             Node<int> head = nodes[0];
 
+            Console.WriteLine("Node:");
             Print(head);
+            Console.WriteLine("Remove:");
             SelectAndRemove(head, rnd.Next(11));
         }
     }
