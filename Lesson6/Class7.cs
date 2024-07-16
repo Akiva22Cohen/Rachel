@@ -37,8 +37,9 @@ namespace Lesson6
                     posM = posL;
                     while (posM.GetValue() < num)
                         posM = posM.GetRight();
-
-                    posM.SetLeft(new BinNode<int>(posM.GetLeft(), num, posM));
+                    BinNode<int> temp = new BinNode<int>(posM.GetLeft(), num, posM);
+                    posM.SetLeft(temp);
+                    temp.GetLeft().SetRight(temp);
                 }
             }
 
