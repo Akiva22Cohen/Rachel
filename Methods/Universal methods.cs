@@ -33,6 +33,16 @@ namespace Methods
         - הוספה לתחילת השרשרת המעגלית
         - מחיקת חוליות בשרשרת מעגלית
         - מיזוג רשימות
+        - פעולה הבונה שרשרת דו כיוונית
+        - מחזירה הפניה לחוליה האחרונה בשרשרת דו כיוונית
+        - מחזירה הפניה לחוליה הראשונה בשרשרת דו כיוונית
+        - מחזירה הפניה לחוליה האמצעית בשרשרת דו כיוונית
+        - סריקה שרשרת דו כיוונית
+        - הצגת השרשרת משמאל לימין
+        - הצגת השרשרת מימין לשמאל
+        - הוספת חוליה לשרשרת דו כיוונית
+        - פעולה חיפוש בשרשרת דו כיוונית
+        - מחיקה חוליה משרשרת דו כיוונית
     */
 
     public class Universal_methods
@@ -490,6 +500,205 @@ namespace Methods
             lst3 = lst3.GetNext();
 
             return lst3;
+        }
+
+        // פעולה הבונה שרשרת דו כיוונית
+        public static BinNode<int> GetList(int[] arr)
+        {
+            BinNode<int> lst = new BinNode<int>(arr[0]);
+            BinNode<int> pos = lst;
+
+            for (int i = 1; i < arr.Length; i++)
+            {
+                pos.SetRight(new BinNode<int>(pos, arr[i], null));
+                pos = pos.GetRight();
+            }
+
+            return lst;
+        }
+
+        // מחזירה הפניה לחוליה האחרונה בשרשרת דו כיוונית
+        public static BinNode<int> GetLast(BinNode<int> lst)
+        {
+            while (lst != null && lst.HasRight())
+                lst = lst.GetRight();
+
+            return lst;
+        }
+
+        // מחזירה הפניה לחוליה הראשונה בשרשרת דו כיוונית
+        public static BinNode<int> GetFirst(BinNode<int> lst)
+        {
+            while (lst != null && lst.HasLeft())
+                lst = lst.GetLeft();
+
+            return lst;
+        }
+
+        // מחזירה הפניה לחוליה האמצעית בשרשרת דו כיוונית
+        public static BinNode<int> GetMiddle(BinNode<int> lst)
+        {
+            if (lst == null) return null;
+
+            BinNode<int> slow = lst;
+            BinNode<int> fast = lst;
+
+            while (fast != null && fast.HasRight())
+            {
+                slow = slow.GetRight();
+                fast = fast.GetRight().GetRight();
+            }
+
+            return slow;
+        }
+
+        // סריקה שרשרת דו כיוונית
+        public static void TwoWayChainScan(BinNode<int> lst)
+        {
+            BinNode<int> pos = lst;
+
+            while (pos != null)
+            {
+                Console.WriteLine(pos.GetValue());
+                pos = pos.GetRight();
+            }
+
+            pos = lst.GetLeft();
+            while (pos != null)
+            {
+                Console.WriteLine(pos.GetValue());
+                pos = pos.GetLeft();
+            }
+        }
+
+        // הצגת השרשרת משמאל לימין
+        public static void Show(BinNode<int> lst)
+        {
+            BinNode<int> pos = GetFirst(lst);
+
+            Console.Write("[");
+            while (pos != null)
+            {
+                Console.Write(pos.GetValue());
+                pos = pos.GetRight();
+                if (pos != null)
+                    Console.Write(", ");
+            }
+            Console.WriteLine("]");
+        }
+
+        // הצגת השרשרת מימין לשמאל
+        public static void ShowBackWord(BinNode<int> lst)
+        {
+            BinNode<int> pos = GetLast(lst);
+
+            Console.Write("[");
+            while (pos != null)
+            {
+                Console.Write(pos.GetValue());
+                pos = pos.GetLeft();
+                if (pos != null)
+                    Console.Write(", ");
+
+            }
+            Console.WriteLine("]");
+        }
+
+        // הוספת חוליה לשרשרת דו כיוונית
+        public static void Add(BinNode<int> posL, BinNode<int> posR, int num)
+        {
+            if (posL == null)
+                posR.SetLeft(new BinNode<int>(null, num, posR));
+            else if (posR == null)
+                posL.SetRight(new BinNode<int>(posL, num, null));
+            else
+            {
+                posL.SetRight(new BinNode<int>(posL, num, posR));
+                posR.SetLeft(posL.GetRight());
+            }
+        }
+
+        // פעולה חיפוש בשרשרת דו כיוונית
+        public static BinNode<int> FindNode(BinNode<int> lst, int num)
+        {
+            BinNode<int> pos = lst;
+
+            while (pos != null)
+            {
+                if (pos.GetValue() == num)
+                    return pos;
+                pos = pos.GetRight();
+            }
+
+            pos = lst.GetLeft();
+            while (pos != null)
+            {
+                if (pos.GetValue() == num)
+                    return pos;
+                pos = pos.GetLeft();
+            }
+
+            return null;
+        }
+
+        // מחיקה חוליה משרשרת דו כיוונית
+        //public static BinNode<int> Delete(BinNode<int> lst, int num)
+        //{
+        //    BinNode<int> pos = FindNode(lst, num);
+        //    BinNode<int> posL = pos.GetLeft();
+        //    BinNode<int> posR = pos.GetRight();
+
+        //    if (posL == null)
+        //    {
+        //        pos.SetRight(null);
+        //        posR.SetLeft(null);
+        //        if (pos == lst) lst = posR;
+        //    }
+        //    else if (posR == null)
+        //    {
+        //        pos.SetLeft(null);
+        //        posL.SetRight(null);
+        //        if (pos == lst) lst = posL;
+        //    }
+        //    else
+        //    {
+        //        pos.SetRight(null);
+        //        pos.SetLeft(null);
+        //        posL.SetRight(posR);
+        //        posR.SetLeft(posL);
+        //        if (pos == lst) lst = posR;
+        //    }
+
+        //    return lst;
+        //}
+        public static BinNode<int> Delete(BinNode<int> lst, int num)
+        {
+            BinNode<int> pos = FindNode(lst, num);
+            if (pos == null)
+                // The node with the given value was not found
+                return lst;
+
+            BinNode<int> posL = pos.GetLeft();
+            BinNode<int> posR = pos.GetRight();
+
+            // If the node to be deleted is the head of the list
+            if (pos == lst)
+                lst = posR;
+
+
+            // Update the left and right nodes to skip the node to be deleted
+            if (posL != null)
+                posL.SetRight(posR);
+
+            if (posR != null)
+                posR.SetLeft(posL);
+
+
+            // Clean up the node to be deleted (optional)
+            pos.SetLeft(null);
+            pos.SetRight(null);
+
+            return lst;
         }
 
     }
