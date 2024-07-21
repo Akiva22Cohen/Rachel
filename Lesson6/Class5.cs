@@ -9,36 +9,19 @@ namespace Lesson6
 {
     public class Class5
     {
-        // מחזירה הפניה לחוליה הראשונה בשרשרת דו כיוונית
-        public static BinNode<int> GetFirst(BinNode<int> lst)
-        {
-            while (lst != null && lst.HasLeft())
-                lst = lst.GetLeft();
-
-            return lst;
-        }
-
-        // מחזירה הפניה לחוליה האחרונה בשרשרת דו כיוונית
-        public static BinNode<int> GetLast(BinNode<int> lst)
-        {
-            while (lst != null && lst.HasRight())
-                lst = lst.GetRight();
-
-            return lst;
-        }
-
         // הצגת השרשרת משמאל לימין
         public static void Show(BinNode<int> lst)
         {
-            BinNode<int> pos = GetFirst(lst);
+            BinNode<int> pos = lst;
+            while (pos != null && pos.HasLeft())
+                pos = pos.GetLeft();
 
             Console.Write("[");
             while (pos != null)
             {
                 Console.Write(pos.GetValue());
                 pos = pos.GetRight();
-                if (pos != null)
-                    Console.Write(", ");
+                Console.Write((pos != null) ? ", " : "");
             }
             Console.WriteLine("]");
         }
@@ -46,16 +29,16 @@ namespace Lesson6
         // הצגת השרשרת מימין לשמאל
         public static void ShowBackWord(BinNode<int> lst)
         {
-            BinNode<int> pos = GetLast(lst);
+            BinNode<int> pos = lst;
+            while (pos != null && pos.HasRight())
+                pos = pos.GetRight();
 
             Console.Write("[");
             while (pos != null)
             {
                 Console.Write(pos.GetValue());
                 pos = pos.GetLeft();
-                if (pos != null)
-                    Console.Write(", ");
-
+                Console.Write((pos != null) ? ", " : "");
             }
             Console.WriteLine("]");
         }
@@ -138,18 +121,29 @@ namespace Lesson6
             return lst;
         }
 
+        // מוחקת את כל האיברים הגדולים מהמספר המתקבל כפרמטר
         public static BinNode<int> DeleteAboveNum(BinNode<int> lst, int num)
         {
             BinNode<int> pos = lst;
+            BinNode<int> next;
 
             // Traverse and delete nodes with values greater than num
             while (pos != null)
             {
-                BinNode<int> next = pos.GetRight(); // Store next node before deletion
+                next = pos.GetRight(); // Store next node before deletion
                 if (pos.GetValue() > num)
-                {
                     lst = Delete(lst, pos.GetValue());
-                }
+                
+                pos = next;
+            }
+            
+            pos = lst.GetLeft();
+            while (pos != null)
+            {
+                next = pos.GetLeft(); // Store next node before deletion
+                if (pos.GetValue() > num)
+                    lst = Delete(lst, pos.GetValue());
+                
                 pos = next;
             }
 

@@ -38,7 +38,10 @@ namespace Lesson6
         public bool HasLeft() { return this.left != null; }
         public bool HasRight() { return this.right != null; }
 
-        public override string ToString() { return "" + this.value; }
+        public override string ToString() 
+        { 
+            return $"Left: {(left != null ? left.value : "null")} -> Current: {this.value} -> Right: {(right != null ? right.value : "null")}"; 
+        }
 
         public string ToPrint()
         {

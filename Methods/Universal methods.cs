@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,9 @@ namespace Methods
         - מחיקת חוליות בשרשרת מעגלית
         - מיזוג רשימות
         - פעולה הבונה שרשרת דו כיוונית
+        - פעולה הבונה שרשרת דו כיוונית עם ערכים אקראיים
+        - פעולה הבונה שרשרת דו כיוונית עם ערכים אקראיים בסדר עולה
+        - פעולה הבונה שרשרת דו כיוונית וקולטת את ניתוניו
         - מחזירה הפניה לחוליה האחרונה בשרשרת דו כיוונית
         - מחזירה הפניה לחוליה הראשונה בשרשרת דו כיוונית
         - מחזירה הפניה לחוליה האמצעית בשרשרת דו כיוונית
@@ -43,6 +47,8 @@ namespace Methods
         - הוספת חוליה לשרשרת דו כיוונית
         - פעולה חיפוש בשרשרת דו כיוונית
         - מחיקה חוליה משרשרת דו כיוונית
+        - מוחקת את כל האיברים הגדולים מהמספר המתקבל כפרמטר
+        - בודק אם הרשימה דו כיוונית פלינדרום
     */
 
     public class Universal_methods
@@ -517,6 +523,82 @@ namespace Methods
             return lst;
         }
 
+        // פעולה הבונה שרשרת דו כיוונית עם ערכים אקראיים
+        public static BinNode<int> GetList(int size, int from, int to)
+        {
+            if (size <= 0 || from >= to)
+                return null;
+
+            Random rnd = new Random();
+            BinNode<int> newBinNode = new BinNode<int>(rnd.Next(from, to + 1));
+            BinNode<int> pos = newBinNode;
+
+            for (int i = 1; i < size; i++)
+            {
+                pos.SetRight(new BinNode<int>(pos, rnd.Next(from, to + 1), null));
+                pos = pos.GetRight();
+            }
+
+            return newBinNode;
+        }
+
+        // פעולה הבונה שרשרת דו כיוונית עם ערכים אקראיים בסדר עולה
+        public static BinNode<int> BuildSorted(int size, int from, int to)
+        {
+            Random rnd = new Random();
+            int num = rnd.Next(from, to + 1);
+            BinNode<int> newBinNode = new BinNode<int>(num);
+
+            BinNode<int> posL = newBinNode;
+            BinNode<int> posR = newBinNode;
+            BinNode<int> posM;
+
+            for (int i = 1; i < size; i++)
+            {
+                num = rnd.Next(from, to + 1);
+
+                if (num >= posR.GetValue())
+                {
+                    posR.SetRight(new BinNode<int>(posR, num, null));
+                    posR = posR.GetRight();
+                }
+                else if (num <= posL.GetValue())
+                {
+                    posL.SetLeft(new BinNode<int>(null, num, posL));
+                    posL = posL.GetLeft();
+                }
+                else
+                {
+                    posM = posL;
+                    while (posM.GetValue() < num)
+                        posM = posM.GetRight();
+                    BinNode<int> temp = new BinNode<int>(posM.GetLeft(), num, posM);
+                    posM.SetLeft(temp);
+                    temp.GetLeft().SetRight(temp);
+                }
+            }
+
+            return posL;
+        }
+
+        // פעולה הבונה שרשרת דו כיוונית וקולטת את ניתוניו
+        public static BinNode<int> BuildBiList()
+        {
+            int size = int.Parse(Console.ReadLine()),
+                num = int.Parse(Console.ReadLine());
+            BinNode<int> newBinNode = new BinNode<int>(num);
+            BinNode<int> pos = newBinNode;
+
+            for (int i = 1; i < size; i++)
+            {
+                num = int.Parse(Console.ReadLine());
+                pos.SetRight(new BinNode<int>(pos, num, null));
+                pos = pos.GetRight();
+            }
+
+            return newBinNode;
+        }
+
         // מחזירה הפניה לחוליה האחרונה בשרשרת דו כיוונית
         public static BinNode<int> GetLast(BinNode<int> lst)
         {
@@ -574,15 +656,16 @@ namespace Methods
         // הצגת השרשרת משמאל לימין
         public static void Show(BinNode<int> lst)
         {
-            BinNode<int> pos = GetFirst(lst);
+            BinNode<int> pos = lst;
+            while (pos != null && pos.HasLeft())
+                pos = pos.GetLeft();
 
             Console.Write("[");
             while (pos != null)
             {
                 Console.Write(pos.GetValue());
                 pos = pos.GetRight();
-                if (pos != null)
-                    Console.Write(", ");
+                Console.Write((pos != null) ? ", " : "");
             }
             Console.WriteLine("]");
         }
@@ -590,16 +673,16 @@ namespace Methods
         // הצגת השרשרת מימין לשמאל
         public static void ShowBackWord(BinNode<int> lst)
         {
-            BinNode<int> pos = GetLast(lst);
+            BinNode<int> pos = lst;
+            while (pos != null && pos.HasRight())
+                pos = pos.GetRight();
 
             Console.Write("[");
             while (pos != null)
             {
                 Console.Write(pos.GetValue());
                 pos = pos.GetLeft();
-                if (pos != null)
-                    Console.Write(", ");
-
+                Console.Write((pos != null) ? ", " : "");
             }
             Console.WriteLine("]");
         }
@@ -701,5 +784,60 @@ namespace Methods
             return lst;
         }
 
+        // מוחקת את כל האיברים הגדולים מהמספר המתקבל כפרמטר
+        public static BinNode<int> DeleteAboveNum(BinNode<int> lst, int num)
+        {
+            BinNode<int> pos = lst;
+            BinNode<int> next;
+
+            // Traverse and delete nodes with values greater than num
+            while (pos != null)
+            {
+                next = pos.GetRight(); // Store next node before deletion
+                if (pos.GetValue() > num)
+                    lst = Delete(lst, pos.GetValue());
+
+                pos = next;
+            }
+
+            pos = lst.GetLeft();
+            while (pos != null)
+            {
+                next = pos.GetLeft(); // Store next node before deletion
+                if (pos.GetValue() > num)
+                    lst = Delete(lst, pos.GetValue());
+
+                pos = next;
+            }
+
+            return lst;
+        }
+
+        // בודק אם הרשימה דו כיוונית פלינדרום
+        public static bool IsPalindrom(BinNode<int> binNode)
+        {
+            if (binNode == null) return false;
+
+            BinNode<int> first = binNode;
+            BinNode<int> last = binNode;
+
+            while (first.HasLeft())
+                first = first.GetLeft();
+
+
+            while (last.HasRight())
+                last = last.GetRight();
+
+            while (first != last && first.GetLeft() != last)
+            {
+                if (first.GetValue() != last.GetValue())
+                    return false;
+
+                first = first.GetRight();
+                last = last.GetLeft();
+            }
+
+            return true;
+        }
     }
 }

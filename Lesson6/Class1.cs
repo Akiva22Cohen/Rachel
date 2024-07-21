@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 namespace Lesson6
 {
     public class Class1
-    {     
+    {
         public static BinNode<int> GetList(int size, int from, int to)
         {
+            if (size <= 0 || from >= to)
+                return null;
+
             Random rnd = new Random();
             BinNode<int> newBinNode = new BinNode<int>(rnd.Next(from, to + 1));
             BinNode<int> pos = newBinNode;
@@ -23,12 +26,13 @@ namespace Lesson6
             return newBinNode;
         }
 
+
         public static void RunTestQ1()
         {
             Random rnd = new Random();
-            int size = rnd.Next(1, 11), 
+            int size = rnd.Next(1, 11),
                 from = rnd.Next(-100, 0),
-                to = rnd.Next(101);
+                to = rnd.Next(from, 101);
 
             Console.WriteLine($"size: {size}\nfrom: {from}\nto: {to}\n");
             BinNode<int> lst = GetList(size, from, to);

@@ -8,27 +8,19 @@ namespace Lesson6
 {
     public class Class2
     {
-        // מחזירה הפניה לחוליה הראשונה בשרשרת דו כיוונית
-        public static BinNode<int> GetFirst(BinNode<int> lst)
-        {
-            if (lst != null)
-                while (lst.HasLeft())
-                    lst = lst.GetLeft();
-            return lst;
-        }
-
         // הצגת השרשרת משמאל לימין
         public static void Show(BinNode<int> lst)
         {
-            BinNode<int> pos = GetFirst(lst);
+            BinNode<int> pos = lst;
+            while (pos != null && pos.HasLeft())
+                pos = pos.GetLeft();
 
             Console.Write("[");
             while (pos != null)
             {
                 Console.Write(pos.GetValue());
-                if (pos.HasRight())
-                    Console.Write(", ");
                 pos = pos.GetRight();
+                Console.Write((pos != null) ? ", " : "");
             }
             Console.WriteLine("]");
         }

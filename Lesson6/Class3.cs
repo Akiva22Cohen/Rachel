@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,27 +9,19 @@ namespace Lesson6
 {
     public class Class3
     {
-        // מחזירה הפניה לחוליה האחרונה בשרשרת דו כיוונית
-        public static BinNode<int> GetLast(BinNode<int> lst)
-        {
-            if (lst != null)
-                while (lst.HasRight())
-                    lst = lst.GetRight();
-            return lst;
-        }
-
         // הצגת השרשרת מימין לשמאל
         public static void ShowBackWord(BinNode<int> lst)
         {
-            BinNode<int> pos = GetLast(lst);
+            BinNode<int> pos = lst;
+            while (pos != null && pos.HasRight())
+                pos = pos.GetRight();
 
             Console.Write("[");
             while (pos != null)
             {
                 Console.Write(pos.GetValue());
-                if (pos.HasLeft())
-                    Console.Write(", ");
                 pos = pos.GetLeft();
+                Console.Write((pos != null) ? ", " : "");
             }
             Console.WriteLine("]");
         }

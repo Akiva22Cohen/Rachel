@@ -56,7 +56,7 @@ namespace Lesson6
             while (last.HasRight())
                 last = last.GetRight();
 
-            while (first != last)
+            while (first != last && first.GetLeft() != last)
             {
                 if (first.GetValue() != last.GetValue()) 
                     return false;
@@ -82,7 +82,7 @@ namespace Lesson6
             while (last.HasRight())
                 last = last.GetRight();
 
-            while (first != last)
+            while (first != last && first.GetLeft() != last)
             {
                 if (first.GetValue() != last.GetValue()) 
                     return false;

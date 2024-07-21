@@ -46,15 +46,16 @@ namespace Lesson6
         // הצגת השרשרת משמאל לימין
         public static void Show(BinNode<int> lst)
         {
-            BinNode<int> pos = GetFirst(lst);
+            BinNode<int> pos = lst;
+            while (pos != null && pos.HasLeft())
+                pos = pos.GetLeft();
 
             Console.Write("[");
             while (pos != null)
             {
                 Console.Write(pos.GetValue());
                 pos = pos.GetRight();
-                if (pos != null)
-                    Console.Write(", ");                
+                Console.Write((pos != null) ? ", " : "");
             }
             Console.WriteLine("]");
         }
@@ -62,16 +63,16 @@ namespace Lesson6
         // הצגת השרשרת מימין לשמאל
         public static void ShowBackWord(BinNode<int> lst)
         {
-            BinNode<int> pos = GetLast(lst);
+            BinNode<int> pos = lst;
+            while (pos != null && pos.HasRight())
+                pos = pos.GetRight();
 
             Console.Write("[");
             while (pos != null)
             {
                 Console.Write(pos.GetValue());
                 pos = pos.GetLeft();
-                if (pos != null)
-                    Console.Write(", ");
-                
+                Console.Write((pos != null) ? ", " : "");
             }
             Console.WriteLine("]");
         }
@@ -129,24 +130,27 @@ namespace Lesson6
 
             Print(lst);
 
+            // הכנסה איבר לתחילת הרשימה
             int num = rnd.Next(101);
             Console.WriteLine("num: " + num);
             BinNode<int> first = GetFirst(lst);
             Add(first.GetLeft(), first, num);
             Print(first);
 
+            // הכנסת איבר לסוף רשימה
             num = rnd.Next(101);
             Console.WriteLine("num: " + num);
             BinNode<int> last = GetLast(lst);
             Add(last, last.GetRight(), num);
             Print(last);
 
+            // הכנסת איבר לאמצע רשימה
             num = rnd.Next(101);
             Console.WriteLine("num: " + num);
             BinNode<int> middle = GetMiddle(lst);
             Add(middle.GetLeft(), middle, num);
             Print(middle);
 
-        }
+        }       
     }
 }
