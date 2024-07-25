@@ -15,46 +15,40 @@ namespace Lesson5
             if (lst == null)
                 return null;
 
-            Node<int> current = lst;
-            Node<int> prev = null;
+            Node<int> prev = lst;
 
-            // Check if the head needs to be deleted
-            if (current.GetValue() == num)
+            // If the head node is to be deleted
+            if (lst.GetValue() == num)
             {
-                // Find the last node which points to the head
-                do
-                {
-                    prev = current;
-                    current = current.GetNext();
-                } while (current != lst);
-
-                if (prev == lst)
-                    // Only one node in the list
+                // Special case: if there's only one node in the list
+                if (lst.GetNext() == lst)
                     return null;
 
+                // Find the last node in the list
+                while (prev.GetNext() != lst)
+                    prev = prev.GetNext();
 
-                // Remove the head node
+                // Update the last node to point to the new head
                 prev.SetNext(lst.GetNext());
-                lst = lst.GetNext();
-            }
-            else
-            {
-                // Traverse the list to find the node to delete
-                do
-                {
-                    prev = current;
-                    current = current.GetNext();
-                } while (current != lst && current.GetValue() != num);
+                lst.SetNext(null); // Disconnect the current head
 
-                if (current.GetValue() == num)
-                    // Remove the node
-                    prev.SetNext(current.GetNext());
-
+                // Return the new head of the list
+                return prev.GetNext();
             }
 
+            // Traverse the list to find the node before the one to be deleted
+            while (prev.GetNext() != lst && prev.GetNext().GetValue() != num)
+                prev = prev.GetNext();
+
+            // If the node to be deleted is found
+            if (prev.GetNext().GetValue() == num)
+                // Update the 'next' pointer to skip the deleted node
+                prev.SetNext(prev.GetNext().GetNext());
+
+
+            // Return the head of the list
             return lst;
         }
-
 
         public static void SelectAndRemove(Node<int> lst, int num)
         {

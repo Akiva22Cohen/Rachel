@@ -28,7 +28,14 @@ namespace Lesson5
                 pos = pos.GetNext();
 
             pos.SetNext(null);
-            Console.WriteLine(head.ToPrint());
+            pos = head;
+
+            while (pos != null)
+            {
+                Console.Write(pos.GetValue() + ", ");
+                pos = pos.GetNext();
+            }
+            Console.WriteLine("null");
         }
 
         public static void RunTestQ2()

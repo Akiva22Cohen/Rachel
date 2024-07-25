@@ -7,8 +7,8 @@ class Program
     {
         //Class1.TestQ1();
         //Class2.TestQ2();
-        //Class3.TestQ3();
+        Class3.TestQ3();
         //Class4.TestQ4();
-        Class5.TestQ5();
+        //Class5.TestQ5();
     }
 }

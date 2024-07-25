@@ -28,11 +28,24 @@ namespace Lesson5
 
         public static Node<int> FindPrev(Node<int> lst, Node<int> pos)
         {
-            while (lst.GetNext() != pos)
-                lst = lst.GetNext();
+            if (lst == null || pos == null)
+                return null;
 
-            return lst;
+            Node<int> start = lst;
+
+            // Traverse the list until we find the node whose next node is 'pos'
+            // or we return to the start node, indicating 'pos' is not in the list
+            do
+            {
+                if (start.GetNext() == pos)
+                    return start;
+                start = start.GetNext();
+            } while (lst != start);
+
+            // If 'pos' is not found, return null
+            return null;
         }
+
 
         public static void GameSteps(Node<int> game)
         {

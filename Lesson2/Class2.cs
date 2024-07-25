@@ -60,30 +60,26 @@ namespace Lesson2
                 switch (chStrand)
                 {
                     case 'A':
-                        posNewStrand.SetValue('T');
+                        posNewStrand.SetNext(new Node<char>('T'));
                         break;
                     case 'T':
-                        posNewStrand.SetValue('A');
+                        posNewStrand.SetNext(new Node<char>('A'));
                         break;
                     case 'C':
-                        posNewStrand.SetValue('G');
+                        posNewStrand.SetNext(new Node<char>('G'));
                         break;
                     case 'G':
-                        posNewStrand.SetValue('C');
+                        posNewStrand.SetNext(new Node<char>('C'));
                         break;
                     default:
                         return null;
                 }
 
                 posStrand = posStrand.GetNext();
-                if (posStrand != null)
-                {
-                    posNewStrand.SetNext(new Node<char>(' '));
-                    posNewStrand = posNewStrand.GetNext();
-                }
+                posNewStrand = posNewStrand.GetNext();
             }
 
-            return newStrand;
+            return newStrand.GetNext();
         }
 
         // יצירת שרשרת רדומלית

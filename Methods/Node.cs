@@ -39,9 +39,9 @@ namespace Methods
         public string ToPrint()
         {
             if (this.HasNext())
-                return value + "=>" + this.next.ToPrint();
+                return value + " => " + this.next.ToPrint();
 
-            return value + "=>null";
+            return value + " => null ";
         }
     }
 }

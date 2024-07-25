@@ -25,6 +25,7 @@ namespace Methods
         - שרשרת ממויינת – בדיקה (char)
         - שרשרת ממויינת – בדיקה (strhng)
         - שרשרת ממויינת – סידרה
+        - מיזוג רשימות
         - מיון שרשרת חוליות
         - מיון שרשרת חוליות – מיון הכנסה
         - להפוך שרשרת חוליות רגילה למעגלית
@@ -33,7 +34,6 @@ namespace Methods
         - פעולה שמקבלת שרשרת מעגלית ומוסיפה בין כל שתי חוליות חוליה חדשה שערכה כסכום שכנותיה
         - הוספה לתחילת השרשרת המעגלית
         - מחיקת חוליות בשרשרת מעגלית
-        - מיזוג רשימות
         - פעולה הבונה שרשרת דו כיוונית
         - פעולה הבונה שרשרת דו כיוונית עם ערכים אקראיים
         - פעולה הבונה שרשרת דו כיוונית עם ערכים אקראיים בסדר עולה
@@ -56,20 +56,14 @@ namespace Methods
         // הדפסת שרשרות
         public static void PrintNode(Node<int> lst)
         {
-            if (lst == null)
-            {
-                Console.WriteLine("The Node is empty!");
-                return;
-            }
             Node<int> pos = lst;
 
-            while (pos.HasNext())
+            while (pos != null)
             {
                 Console.Write(pos.GetValue() + " --> ");
                 pos = pos.GetNext();
             }
-            Console.Write(pos.GetValue());
-            Console.WriteLine();
+            Console.WriteLine("null");
         }
 
 
@@ -152,11 +146,10 @@ namespace Methods
 
 
         // הוספה כחוליה אחרונה
-        public static Node<int> AddLast(Node<int> lst, int num)
+        public static void AddLast(Node<int> lst, int num)
         {
             Node<int> after = GetLast(lst);
             after.SetNext(new Node<int>(num));
-            return after;
         }
 
 
@@ -204,7 +197,11 @@ namespace Methods
             if (lst == pos)
                 return lst.GetNext();
 
-            Node<int> prev = FindPrev(lst, pos);
+            Node<int> prev = lst;
+
+            while (prev.GetNext() != pos)
+                prev = prev.GetNext();
+
             prev.SetNext(pos.GetNext());
             pos.SetNext(null);
 
@@ -306,6 +303,38 @@ namespace Methods
         }
 
 
+        // מיזוג רשימות
+        public static Node<int> Merge(Node<int> lst1, Node<int> lst2)
+        {
+            Node<int> lst3 = new Node<int>(0);
+            Node<int> q = lst3;
+
+            while (lst1 != null && lst2 != null)
+            {
+                if (lst1.GetValue() < lst2.GetValue())
+                {
+                    q.SetNext(new Node<int>(lst1.GetValue()));
+                    lst1 = lst1.GetNext();
+                }
+                else
+                {
+                    q.SetNext(new Node<int>(lst2.GetValue()));
+                    lst2 = lst2.GetNext();
+                }
+                q = q.GetNext();
+            }
+
+            if (lst1 != null)
+                q.SetNext(lst1);
+            else if (lst2 != null)
+                q.SetNext(lst2);
+
+            lst3 = lst3.GetNext();
+
+            return lst3;
+        }
+
+
         // מיון שרשרת חוליות
         public static void BubbleSort(Node<int> lst)
         {
@@ -358,7 +387,9 @@ namespace Methods
         // להפוך שרשרת חוליות רגילה למעגלית
         public static void TurnChainIntoCircular(Node<int> lst)
         {
-            Node<int> last = GetLast(lst);
+            Node<int> last = lst;
+            while (last.HasNext())
+                last = last.GetNext();
 
             last.SetNext(lst);
         }
@@ -436,77 +467,41 @@ namespace Methods
             if (lst == null)
                 return null;
 
-            Node<int> current = lst;
-            Node<int> prev = null;
+            Node<int> prev = lst;
 
-            // Check if the head needs to be deleted
-            if (current.GetValue() == num)
+            // If the head node is to be deleted
+            if (lst.GetValue() == num)
             {
-                // Find the last node which points to the head
-                do
-                {
-                    prev = current;
-                    current = current.GetNext();
-                } while (current != lst);
-
-                if (prev == lst)
-                    // Only one node in the list
+                // Special case: if there's only one node in the list
+                if (lst.GetNext() == lst)
                     return null;
 
+                // Find the last node in the list
+                while (prev.GetNext() != lst)
+                    prev = prev.GetNext();
 
-                // Remove the head node
+                // Update the last node to point to the new head
                 prev.SetNext(lst.GetNext());
-                lst = lst.GetNext();
-            }
-            else
-            {
-                // Traverse the list to find the node to delete
-                do
-                {
-                    prev = current;
-                    current = current.GetNext();
-                } while (current != lst && current.GetValue() != num);
+                lst.SetNext(null); // Disconnect the current head
 
-                if (current.GetValue() == num)
-                    // Remove the node
-                    prev.SetNext(current.GetNext());
-
+                // Return the new head of the list
+                return prev.GetNext();
             }
 
+            // Traverse the list to find the node before the one to be deleted
+            while (prev.GetNext() != lst && prev.GetNext().GetValue() != num)
+                prev = prev.GetNext();
+
+            // If the node to be deleted is found
+            if (prev.GetNext().GetValue() == num)
+                // Update the 'next' pointer to skip the deleted node
+                prev.SetNext(prev.GetNext().GetNext());
+
+
+            // Return the head of the list
             return lst;
         }
-
-
-        // מיזוג רשימות
-        public static Node<int> Merge(Node<int> lst1, Node<int> lst2)
-        {
-            Node<int> lst3 = new Node<int>(0);
-            Node<int> q = lst3;
-
-            while (lst1 != null && lst2 != null)
-            {
-                if (lst1.GetValue() < lst2.GetValue())
-                {
-                    q.SetNext(new Node<int>(lst1.GetValue()));
-                    lst1 = lst1.GetNext();
-                }
-                else
-                {
-                    q.SetNext(new Node<int>(lst2.GetValue()));
-                    lst2 = lst2.GetNext();
-                }
-                q = q.GetNext();
-            }
-
-            if (lst1 != null)
-                q.SetNext(lst1);
-            else if (lst2 != null)
-                q.SetNext(lst2);
-
-            lst3 = lst3.GetNext();
-
-            return lst3;
-        }
+        
 
         // פעולה הבונה שרשרת דו כיוונית
         public static BinNode<int> GetList(int[] arr)

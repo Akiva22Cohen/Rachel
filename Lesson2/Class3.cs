@@ -9,39 +9,80 @@ namespace Lesson2
     public class Class3
     {
         // Q3
+        //static Node<int> RemoveNumFromNode(Node<int> chain, int num, string mode = "normal")
+        //{
+        //    // Q3.1
+        //    if (mode.Equals("start"))
+        //    {
+        //        Node<int> pos = chain;
+        //        while (pos.GetValue() == num)
+        //            pos = pos.GetNext();
+
+        //        return pos;
+        //    } // Q3.2
+        //    else if (mode.Equals("normal"))
+        //    {
+        //        Node<int> first = null;
+        //        Node<int> last = null;
+        //        while (chain != null)
+        //        {
+        //            if (chain.GetValue() != num)
+        //            {
+        //                if (first == null)
+        //                {
+        //                    first = new Node<int>(chain.GetValue());
+        //                    last = first;
+        //                }
+        //                else
+        //                {
+        //                    last.SetNext(new Node<int>(chain.GetValue()));
+        //                    last = last.GetNext();
+        //                }
+        //            }
+        //            chain = chain.GetNext();
+        //        }
+        //        return first;
+        //    }
+        //    return null;
+        //}
+
         static Node<int> RemoveNumFromNode(Node<int> chain, int num, string mode = "normal")
         {
-            // Q3.1
-            if (mode.Equals("start"))
-            {
-                Node<int> pos = chain;
-                while (pos.GetValue() == num)
-                    pos = pos.GetNext();
+            // Handle the case where the list is empty
+            if (chain == null)
+                return null;
 
-                return pos;
-            } // Q3.2
+            // Remove nodes with the value `num` from the beginning of the list
+            while (chain != null && chain.GetValue() == num)
+            {
+                chain = chain.GetNext(); // Move the head to the next node
+            }
+
+            //Q3.1
+            if (mode.Equals("start"))
+                return chain;
             else if (mode.Equals("normal"))
             {
-                Node<int> first = null;
-                Node<int> last = null;
-                while (chain != null)
+                // Now chain points to the new head of the list (if not empty)
+                Node<int> prev = null;
+                Node<int> curr = chain;
+
+                while (curr != null)
                 {
-                    if (chain.GetValue() != num)
+                    if (curr.GetValue() == num)
                     {
-                        if (first == null)
-                        {
-                            first = new Node<int>(chain.GetValue());
-                            last = first;
-                        }
-                        else
-                        {
-                            last.SetNext(new Node<int>(chain.GetValue()));
-                            last = last.GetNext();
-                        }
+                        // Remove the node by skipping it
+                        if (prev != null)
+                            prev.SetNext(curr.GetNext());
                     }
-                    chain = chain.GetNext();
+                    else
+                    {
+                        prev = curr; // Update the previous node
+                    }
+                    curr = curr.GetNext(); // Move to the next node
                 }
-                return first;
+
+                return chain; // Return the updated head of the list
             }
             return null;
         }
