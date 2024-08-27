@@ -3,46 +3,33 @@ using System;
 
 class Program
 {
+    static void Temp(Node<int> lst)
+    {
+        Node<int> pos = lst;
+
+        int num = 0;
+        while (pos != null && pos.HasNext())
+        {
+            while (pos.HasNext() && pos.GetValue() != -1)
+            {
+                num = (num + pos.GetValue()) * 10;
+                pos = pos.GetNext();
+            }
+            Console.WriteLine(num / 10);
+            pos = pos.GetNext();
+            num = 0;
+        }
+    }
+
     static void Main(string[] args)
     {
-        Node<int> lst = null;
-        for (int i = 1; i <= 10; i++)
-            lst = new Node<int>(i, lst);
+        int[] ints = { 2, 6, -1, 8, -1 };
+        Node<int> node = new Node<int>(ints[0]);
+        for (int i = ints.Length - 2; i >= 0; i--)
+            node = new Node<int>(ints[i], node);
 
-        Universal_methods.PrintNode(lst);
+        Console.WriteLine(node.ToPrint());
 
-        Node<int> lst2 = new Node<int>(1);
-        Node<int> pos = lst2;
-        for (int i = 2; i < 10; i++)
-        {
-            pos.SetNext(new Node<int>(i));
-            pos = pos.GetNext();
-        }
-
-        Node<int> lst3 = new Node<int>(1);
-        Node<int> pos2 = lst3;
-        for (int i = 2; i < 15; i += 2)
-        {
-            pos2.SetNext(new Node<int>(i));
-            pos2 = pos2.GetNext();
-        }
-
-        Universal_methods.PrintNode(lst2);
-        Console.WriteLine(Universal_methods.IsUpOrder(lst2));
-        Console.WriteLine(Universal_methods.IsUpOrder(lst));
-
-        Console.WriteLine(Universal_methods.IsSidra(lst2));
-        Console.WriteLine(Universal_methods.IsSidra(lst));
-
-        Universal_methods.BubbleSort(lst);
-        Universal_methods.PrintNode(lst);
-
-
-        Universal_methods.PrintNode(lst3);
-        Universal_methods.PrintNode(Universal_methods.Merge(lst2, lst3));
-
-        Console.WriteLine(Universal_methods.FindPrev(lst2, lst2.GetNext().GetNext()).GetValue());
-
-        Universal_methods.PrintNode(Universal_methods.Remove(lst2, lst2.GetNext().GetNext()));
+        Temp(node);
     }
 }
