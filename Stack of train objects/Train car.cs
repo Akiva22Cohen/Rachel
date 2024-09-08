@@ -14,7 +14,7 @@ namespace Stack_of_train_objects
         private const int maxNumOfPassengers = 50;
 
         public int Id { get => id; set => id = value; }
-        public int NumOfPassengers { get => numOfPassengers; set => numOfPassengers = ((value + maxNumOfPassengers) > 50) ? 50 : value; }
+        public int NumOfPassengers { get => numOfPassengers; set => numOfPassengers = ((value + numOfPassengers) > 50) ? 50 : value; }
 
         public static int MaxNumOfPassengers => maxNumOfPassengers;
 
