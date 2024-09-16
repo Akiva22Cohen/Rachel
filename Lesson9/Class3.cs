@@ -6,39 +6,38 @@ using System.Threading.Tasks;
 
 namespace Lesson9
 {
-    public class Class2
+    public class Class3
     {
-        public static Queue<int> CopyTor(Queue<int> queue)
+        public static bool IsItIN(Queue<int> queue, int num)
         {
             Queue<int> temp = new Queue<int>();
-            Queue<int> newQueue = new Queue<int>();
+            bool b = false;
 
             while (!queue.IsEmpty())
-                temp.Insert(queue.Remove());
-
-            while (!temp.IsEmpty())
             {
-                newQueue.Insert(temp.Head());
-                queue.Insert(temp.Remove());
+                if (queue.Head() == num)
+                    b = true;
+
+                temp.Insert(queue.Remove());
             }
 
-            return newQueue;
+            while (!temp.IsEmpty())
+                queue.Insert(temp.Remove());
+
+            return b;
         }
 
         public static void Run()
         {
             Random rnd = new Random();
-            int len = rnd.Next(2, 20);
+            int len = rnd.Next(2, 10);
+            int num = rnd.Next(10);
 
             Queue<int> queue = new Queue<int>();
-            for (int i = 0; i < len; queue.Insert(rnd.Next(100)), i++) ;
+            for (int i = 0; i < len; queue.Insert(rnd.Next(10)), i++) ;
 
-            Console.WriteLine("queue: " + queue);
+            Console.WriteLine($"IsItIN(Queue<int> {queue}, int {num}) => " + IsItIN(queue, num));
 
-            Console.WriteLine();
-            Console.WriteLine("CopyTor(queue): " + CopyTor(queue));
-
-            Console.WriteLine();
             Console.WriteLine("queue: " + queue);
         }
     }

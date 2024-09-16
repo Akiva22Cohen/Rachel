@@ -28,17 +28,17 @@ namespace Lesson9
 
         public static void Run()
         {
+            Random rnd = new Random();
+            int len = rnd.Next(2, rnd.Next(3, 20));
+            
             Queue<int> queue = new Queue<int>();
-            queue.Insert(1);
-            queue.Insert(2);
-            queue.Insert(3);
-            queue.Insert(4);
-            queue.Insert(5);
+            for (int i = 0; i < len; queue.Insert(rnd.Next(rnd.Next(100))), i++) ;
 
-            Console.WriteLine("queue:");
+            Console.Write("queue: ");
             Console.WriteLine(queue);
 
-            Console.WriteLine(CountMember(queue));
+            Console.WriteLine("len: " + len);
+            Console.WriteLine("CountMember(queue): " + CountMember(queue));
 
         }
     }

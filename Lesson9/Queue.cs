@@ -56,7 +56,7 @@ namespace Lesson9
                 st += temp.GetValue() + ",";
                 temp = temp.GetNext();
             }
-            st += "]";
+            st += "\b]";
             return st;
         }
     }
