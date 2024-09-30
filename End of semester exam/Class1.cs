@@ -8,29 +8,55 @@ namespace End_of_semester_exam
 {
     public class Class1
     {
+        public static Stack<int> QueueConvertToStack(Queue<int> queue)
+        {
+            Stack<int> stack = new Stack<int>();
+            Queue<int> temp = new Queue<int>();
+
+            while (!queue.IsEmpty())
+            {
+                stack.Push(queue.Head());
+                temp.Insert(queue.Remove());
+            }
+
+            while (!temp.IsEmpty())
+                queue.Insert(temp.Remove());
+
+            return stack;
+        }
+
+        public static void Temp(Stack<int> q1, Stack<int> q2, int remainder)
+        {
+            int num, sum, r;
+
+            if (!q1.IsEmpty())
+            {
+                while (!q1.IsEmpty())
+                {
+                    num = q1.Pop();
+
+                    sum = num + remainder;
+                    r = sum % 10;
+                    remainder = sum / 10;
+
+                    q2.Push(r);
+                }
+
+                if (remainder > 0)
+                    q2.Push(remainder);
+            }
+        }
+
         public static Queue<int> SumLongNumbers(Queue<int> num1, Queue<int> num2)
         {
             Queue<int> result = new Queue<int>();
-            Stack<int> temp1 = new Stack<int>();
-            Stack<int> temp2 = new Stack<int>();
+
+            Stack<int> temp1 = QueueConvertToStack(num1);
+            Stack<int> temp2 = QueueConvertToStack(num2);
 
             int n1, n2, sum, r, l = 0;
 
             Stack<int> stack = new Stack<int>();
-
-            while (!num1.IsEmpty() && !num2.IsEmpty())
-            {
-                temp1.Push(num1.Remove());
-                temp2.Push(num2.Remove());
-            }
-
-            if (num1.IsEmpty())
-                while (!num2.IsEmpty())
-                    temp2.Push(num2.Remove());
-
-            else
-                while (!num1.IsEmpty())
-                    temp1.Push(num1.Remove());
 
             while (!temp1.IsEmpty() && !temp2.IsEmpty())
             {
@@ -42,42 +68,13 @@ namespace End_of_semester_exam
                 l = sum / 10;
 
                 stack.Push(r);
-
-                num1.Insert(n1);
-                num2.Insert(n2);
             }
 
-            if (temp1.IsEmpty())
-            {
-                while (!temp2.IsEmpty())
-                {
-                    n2 = temp2.Pop();
-
-                    sum = n2 + l;
-                    r = sum % 10;
-                    l = sum / 10;
-                    stack.Push(r);
-
-                    num2.Insert(n2);
-                }
-            }
-            else
-            {
-                while (!temp1.IsEmpty())
-                {
-                    n1 = temp1.Pop();
-
-                    sum = n1 + l;
-                    r = sum % 10;
-                    l = sum / 10;
-                    stack.Push(r);
-
-                    num1.Insert(n1);
-                }
-            }
-
-            if (l > 0) 
+            if (temp1.IsEmpty() && temp2.IsEmpty() && l > 0) 
                 stack.Push(l);
+
+            Temp(temp1, stack, l);
+            Temp(temp2, stack, l);
 
             while (!stack.IsEmpty())
                 result.Insert(stack.Pop());
