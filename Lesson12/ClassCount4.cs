@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Lesson12
 {
-    public class ClassCount2
+    public class ClassCount4
     {
-        public static int SumEvenValues(BinNode<int> node)
+        public static int CountFullNodes (BinNode<int> node)
         {
             if (node == null) return 0;
 
-            if (node.GetValue() % 2 == 0) 
-                return node.GetValue() + SumEvenValues(node.GetLeft()) + SumEvenValues(node.GetRight());
+            if (node.HasLeft() && node.HasRight())
+                return 1 + CountFullNodes (node.GetLeft()) + CountFullNodes (node.GetRight());
 
-            return SumEvenValues(node.GetLeft()) + SumEvenValues(node.GetRight());
+            return CountFullNodes (node.GetLeft()) + CountFullNodes (node.GetRight());
         }
 
         public static void Run()
@@ -27,9 +27,9 @@ namespace Lesson12
             BinNode<int> node12 = new BinNode<int>(node3, 12, node4);
             BinNode<int> root = new BinNode<int>(node8, 5, node12);
 
-            // קריאה לפונקציה Temp
-            int sumEven = SumEvenValues(root);
-            Console.WriteLine("Sum of even values in the tree: " + sumEven);
+            // קריאה לפונקציה CountFullNodes 
+            int countNodesWithTwoChildren = CountFullNodes (root);
+            Console.WriteLine("Number of nodes with two children: " + countNodesWithTwoChildren);
         }
     }
 }
