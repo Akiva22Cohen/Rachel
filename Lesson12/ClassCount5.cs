@@ -8,32 +8,42 @@ namespace Lesson12
 {
     public class ClassCount5
     {
-        public static int Temp(BinNode<int> node)
+        public static int CountGreaterNodes(BinNode<int> node)
         {
             if (node == null) 
                 return 0;
 
-            int current = node.GetValue(),
-                num = 0,
-                l = 0, 
-                r = 0;
+            int currentValue  = node.GetValue(),
+                count  = 0,
+                leftValue  = 0, 
+                rightValue  = 0;
 
             bool bL = node.HasLeft(),
                  bR = node.HasRight();
-            if (bL) l = node.GetLeft().GetValue();
-            if (bR) r = node.GetRight().GetValue();
+            if (bL) leftValue  = node.GetLeft().GetValue();
+            if (bR) rightValue  = node.GetRight().GetValue();
 
             if (bL)
+            {
                 if (bR)
-                    if (current > l && current > r)
-                        num = 1;
-                else if (current > l)
-                    num = 1;
+                {
+                    if (currentValue  > leftValue  && currentValue  > rightValue )
+                    {
+                        count  = 1;
+                    }
+                }
+                else if (currentValue  > leftValue )
+                {
+                    count  = 1;
+                }
+            }
             else if (bR)
-                if (current > r)
-                    num = 1;
+            {
+                if (currentValue  > rightValue )
+                    count  = 1;
+            }
 
-            return num + Temp(node.GetLeft()) + Temp(node.GetRight());
+            return count  + CountGreaterNodes(node.GetLeft()) + CountGreaterNodes(node.GetRight());
         }
 
         public static void Run()
@@ -46,9 +56,9 @@ namespace Lesson12
             BinNode<int> node8 = new BinNode<int>(null, 8, node7);
             BinNode<int> root = new BinNode<int>(node5, 10, node8);
 
-            // קריאה לפונקציה Temp
-            int count = Temp(root);
-            Console.WriteLine("Number of nodes greater than their children: " + count);
+            // קריאה לפונקציה CountGreaterNodes
+            int count = CountGreaterNodes(root);
+            Console.WriteLine("count ber of nodes greater than their children: " + count);
         }
     }
 }

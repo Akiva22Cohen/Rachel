@@ -13,7 +13,7 @@ namespace Lesson12
             if(node == null) return;
 
             if (node.HasLeft())
-                node.GetLeft().SetValue((char)(node.GetValue() + 1));
+                node.GetLeft().SetValue((char)(node.GetValue() - 1));
             if (node.HasRight())
                 node.GetRight().SetValue((char)(node.GetValue() + 1));
 
