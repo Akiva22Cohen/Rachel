@@ -14,6 +14,19 @@ class Program
         //ClassCount4.Run();
         //ClassCount5.Run();
         //ClassCount6.Run();
-        ClassCount7.Run();
+        //ClassCount7.Run();
+        //ClassCount8.Run();
+        //ClassCount9.Run();
+        //ClassCount10.Run();
+        //ClassCount11.Run();
+        //ClassBool1.Run();
+        //ClassBool2.Run();
+        //ClassBool3.Run();
+        //ClassBool4.Run();
+        //Class1.Run();
+        //Class2.Run();
+        //Class3.Run();
+        //Class4.Run();
+        Class5.Run();
     }
 }
