@@ -8,6 +8,11 @@ namespace Lesson13
 {
     public class Class6
     {
+        public static bool IsLeaf(BinNode<int> node)
+        {
+            return !node.HasLeft() && !node.HasRight();
+        }
+
         public static void Temp(BinNode<int> node)
         {
 

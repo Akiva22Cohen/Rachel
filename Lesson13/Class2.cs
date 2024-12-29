@@ -15,6 +15,8 @@ namespace Lesson13
 
         public static int CountLeaves(BinNode<int> binNode)
         {
+            if (binNode == null) return 0;
+
             if (IsLeaf(binNode))
                 return 1;
 
@@ -32,7 +34,7 @@ namespace Lesson13
 
         public static bool Temp(BinNode<int> node)
         {
-            return CountLeaves(node) >= (CountNodes(node) / 2);
+            return CountLeaves(node) >= (CountNodes(node) / 2.0);
         }
 
         public static void Run()
@@ -69,7 +71,7 @@ namespace Lesson13
                     null // אין בן ימני
                 ),
                 1, // שורש העץ
-                new BinNode<int>(3) // תת-עץ ימני כעלה בודד
+                null // תת-עץ ימני כעלה בודד
             );
             Console.WriteLine($"Unbalanced tree result: {Temp(unbalancedTree)}"); // ציפייה: false
         }
